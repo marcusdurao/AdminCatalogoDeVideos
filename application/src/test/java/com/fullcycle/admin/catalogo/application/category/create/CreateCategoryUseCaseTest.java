@@ -31,7 +31,7 @@ public class CreateCategoryUseCaseTest {
 
     Mockito.when(categoryGateway.create(Mockito.any())).thenAnswer(returnsFirstArg());
 
-    final var actualOutput = useCase.execute(aCommand);
+    final var actualOutput = useCase.execute(aCommand).get();
 
     Assertions.assertNotNull(actualOutput);
     Assertions.assertNotNull(actualOutput.id());
@@ -60,10 +60,10 @@ public class CreateCategoryUseCaseTest {
     final var aCommand =
         CreateCategoryCommand.with(expectedName, expectedDescription, expectedIsActive);
 
-    final var actualException =
-        Assertions.assertThrows(DomainException.class, () -> useCase.execute(aCommand));
+    final var notification = useCase.execute(aCommand).getLeft();
 
-    Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+    Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
+    Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
 
     Mockito.verify(categoryGateway, Mockito.times(0)).create(Mockito.any());
   }
@@ -80,7 +80,7 @@ public class CreateCategoryUseCaseTest {
     Mockito.when(categoryGateway.create(Mockito.any()))
             .thenAnswer(returnsFirstArg());
 
-    final var actualOutput = useCase.execute(aCommand);
+    final var actualOutput = useCase.execute(aCommand).get();
 
     Assertions.assertNotNull(actualOutput);
     Assertions.assertNotNull(actualOutput.id());
@@ -109,10 +109,10 @@ public class CreateCategoryUseCaseTest {
     Mockito.when(categoryGateway.create(Mockito.any()))
             .thenThrow(new IllegalStateException(expectedErrorMessage));
 
-    final var actualException =
-            Assertions.assertThrows(IllegalStateException.class, () -> useCase.execute(aCommand));
+    final var notification = useCase.execute(aCommand).getLeft();
 
-    Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
+    Assertions.assertEquals(expectedErrorMessage, notification.firstError().message());
+    Assertions.assertEquals(expectedErrorCount, notification.getErrors().size());
 
     Mockito.verify(categoryGateway, Mockito.times(1)).create(Mockito.argThat(aCategory ->
             Objects.equals(expectedName, aCategory.getName())
