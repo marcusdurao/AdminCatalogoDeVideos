@@ -37,7 +37,7 @@ public class CategoryTest {
   public void givenAnInvalidNullName_WhenCallNewCategoryAndValidate_ThenSouldReceiveError() {
     final String expectedName = null;
     final var expectedErrorCount = 1;
-    final var expectedErrorMessage = "'name' sould not be null";
+    final var expectedErrorMessage = "'name' should not be null";
     final var expectedDescription = "A Categoria mais assistida";
     final var expectedIsActive = true;
 

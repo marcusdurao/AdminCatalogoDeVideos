@@ -21,7 +21,7 @@ public class CategoryValidator extends Validator {
     final var name = this.category.getName();
 
     if (isNull(name)) {
-      this.validationHandler().append(new Error("'name' sould not be null"));
+      this.validationHandler().append(new Error("'name' should not be null"));
       return;
     }
 
