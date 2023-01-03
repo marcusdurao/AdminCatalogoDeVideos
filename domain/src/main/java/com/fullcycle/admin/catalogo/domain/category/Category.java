@@ -32,6 +32,18 @@ public class Category extends AggregateRoot<CategoryID> {
     this.deletedAt = aDeletedAt;
   }
 
+  public static Category with(final Category aCategory) {
+    return new Category(
+            aCategory.getId(),
+            aCategory.name,
+            aCategory.description,
+            aCategory.isActive(),
+            aCategory.createdAt,
+            aCategory.updatedAt,
+            aCategory.deletedAt
+    );
+  }
+
   public static Category newCategory(
       final String aName, final String aDescription, final boolean isActive) {
     final var id = CategoryID.unique();
